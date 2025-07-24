@@ -1,0 +1,29 @@
+name: Build EXE for Windows
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: pip install pyinstaller matplotlib
+
+    - name: Build EXE
+      run: pyinstaller --onefile --noconsole angle_measure_tool.py
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: angle-tool-exe
+        path: dist/angle_measure_tool.exe
